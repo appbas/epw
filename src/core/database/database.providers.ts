@@ -2,6 +2,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { User } from '../models/user.entity';
 import { DotHour } from '../models/dothour.entity';
 import { Parameter } from '../models/parameter.entity';
+import { environment } from '@src/environments/database.environments';
 
 export const databaseProviders = [
   {
@@ -10,12 +11,23 @@ export const databaseProviders = [
     useFactory: async () => {
       const sequelize = new Sequelize({
         dialect: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: '9238',
-        database: 'cta',
+        dialectOptions: {
+          ssl: environment.ssl ? { require: environment.ssl, rejectUnauthorized: false} : false,
+          // ssl: {
+          //   require: environment.ssl as boolean,
+          //   rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+          // },
+        }, 
+        host: environment.host,
+        port: environment.port as number,
+        username: environment.username,
+        password: environment.password,
+        database: environment.database,
+        // native: true,
+        // ssl: true,
+        // ssl: environment.ssl as boolean,
         quoteIdentifiers: false,
+        logging: console.log,
         define: {
           timestamps: false,
           underscored: false,
@@ -25,6 +37,12 @@ export const databaseProviders = [
           updatedAt   : 'dateTimeUpdate',
           schema: 'epw'
         },
+
+        pool: {
+            max: 20,
+            min: 0,
+            idle: 5000
+        }
 
       });
       sequelize.addModels([User, DotHour, Parameter]);

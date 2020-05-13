@@ -1,14 +1,13 @@
 import { Options } from "sequelize/types";
+import { environment as env } from '@env/database.environments.ts';
 
 export default {
   dialect: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: '9238',
-  // username: user,
-  // password: password,
-  database: 'cta',
+  host: env.host,
+  port: env.port,
+  username: env.username,
+  password: env.password,
+  database: env.database,
   schema: 'epw',
   quoteIdentifiers: false,
   define: {
