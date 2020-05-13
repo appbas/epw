@@ -4,7 +4,7 @@ import {
   MiddlewareConsumer,
   RequestMethod,
 } from '@nestjs/common';
-import { LoggerMiddleware } from './middleware/Logger.middleware';
+import { LoggerMiddleware } from './middleware/logger.middleware';
 import { UsersModule } from 'src/users/users.module';
 import { DotHoursModule } from 'src/dothours/dothours.module';
 import { AuthModule } from './auth/auth.module';
